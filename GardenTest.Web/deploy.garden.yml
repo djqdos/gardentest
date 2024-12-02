@@ -1,0 +1,13 @@
+kind: Deploy
+name: web-deploy
+description: Web Frontend Deployment
+type: container
+dependencies: [build.web-build]
+spec:
+  image: ${actions.build.web-build.outputs.deploymentImageId}
+  ports:
+    - name: http
+      containerPort: 8080
+  ingresses:
+    - path: /
+      port: http

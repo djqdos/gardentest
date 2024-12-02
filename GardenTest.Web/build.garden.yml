@@ -1,0 +1,8 @@
+kind: Build
+name: web-build
+description: Builds the Website
+type: container
+source:
+  path: ../
+spec:
+  dockerfile: GardenTest.Web/Dockerfile

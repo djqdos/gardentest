@@ -1,0 +1,129 @@
+#kind: Deploy
+#name: sqlserver
+#type: container
+#description: dockerized sql server
+#spec:
+#  image: mcr.microsoft.com/mssql/server:2022-latest
+#  ports:
+#    - name: db
+#      containerPort: 1433      
+#  env:
+#    ACCEPT_EULA: Y
+#    MSSQL_SA_PASSWORD: ChangeMe!
+        
+        
+        
+# k8syaml.com - Kubernetes manifest generator
+kind: Deploy
+type: kubernetes
+name: sqlserver
+spec:
+  manifests:
+    - # Actual SQL Server
+    - apiVersion: apps/v1
+      kind: Deployment
+      metadata:
+        name: mssql-deployment
+        labels:
+          app: mssql
+      spec:
+        selector:
+          matchLabels:
+            app: mssql
+        replicas: 1
+        strategy:
+          type: Recreate  #RollingUpdate
+        template:
+          metadata:
+            labels:
+              app: mssql
+          spec:
+            
+            
+            
+            
+            
+            
+            terminationGracePeriodSeconds: 10
+            securityContext:
+              fsGroup: 1000
+            
+            hostNetwork: true
+            containers:
+              - name: mssql
+                image: 'mcr.microsoft.com/mssql/server:2022-latest'
+                ports:
+                  - name: bob
+                    containerPort: 1433
+                env:
+                  - name: MSSQL_PID
+                    value: "Developer"
+                  - name: ACCEPT_EULA
+                    value: Y
+                  - name: MSSQL_SA_PASSWORD
+                    value: ChangeMe!
+                #volumeMounts:
+                #  - name: mssql-volume
+                #    mountPath: /var/opt/mssql
+                #volumes:
+                #  - name: mssql-volume
+                #    persistentVolumeClaim:
+                #      claimName: mssql-claim
+                      
+                      
+    # Storage Class
+    #- apiVersion: storage.k8s.io/v1
+    #  kind: StorageClass
+    #  metadata:
+    #    name: local-storage
+    #  provisioner: kubernetes.io/no-provisioner
+    #  volumeBindingMode: WaitForFirstConsumer
+    
+                      
+                      
+#    # Persistent Volume          
+#    - apiVersion: v1
+#      kind: PersistentVolume
+#      metadata:
+#        name: mssql-volume
+#      spec:
+#        capacity:
+#          storage: 1Gi
+#        accessModes:
+#          - ReadWriteOnce
+#        storageClassName: hostpath
+#        hostPath:
+#          path: "/mnt/data"
+#    
+#    # Persistent Volume Claim
+#    - apiVersion: v1
+#      kind: PersistentVolumeClaim
+#      metadata:
+#        name: mssql-claim
+#        # annotations:
+#        #   volume.beta.kubernetes.io/storage-class: managed-premium # <!-- this is azure, what storage class for local kubernetes
+#      spec:
+#        storageClassName: hostpath
+#        accessModes:
+#          - ReadWriteOnce
+#        resources:
+#          requests:
+#            storage: 1Gi
+    
+    # LOAD BALANCER
+    - apiVersion: v1
+      kind: Service
+      metadata:
+        name: mssql-service
+      spec:
+        type: LoadBalancer
+        selector:
+          app: mssql
+        ports:
+          - protocol: TCP
+            port: 1433
+            targetPort: 1433
+              
+       
+        
+   

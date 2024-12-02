@@ -1,0 +1,38 @@
+################
+#              #
+# TEST BUILDER #
+#              #
+################
+kind: Build
+name: tests-build
+description: Builds the unit tests
+type: container
+source:
+  path: ../                                                     # Where to 'run' the docker file from. This helps with
+                                                                # Dotnet projects, where they have a reference to 
+                                                                # another project, that resides outside the current folder
+                                                                # eg, SampleSolution.Web has a reference to
+                                                                # SampleSolution.Services (which is its own project)
+spec:
+  dockerfile: GardenTest.Tests/Dockerfile
+  
+  
+  
+---
+###############
+#             #
+# TEST RUNNER #
+#             #
+###############
+kind: Test
+name: tests-testrunner
+description: Runs the tests
+type: container
+dependencies:
+  - build.tests-build                                             # Dependency on the build step completing
+spec:
+  image: ${actions.build.tests-build.outputs.deploymentImageId}   # The image that the build step creates
+  command: ["dotnet", "test", "GardenTest.Tests.dll"]             # The command to run in the container
+  artifacts:
+    - source: /report/*
+      target: my-test-report

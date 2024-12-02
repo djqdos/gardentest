@@ -1,18 +1,4 @@
-#kind: Deploy
-#name: sqlserver
-#type: container
-#description: dockerized sql server
-#spec:
-#  image: mcr.microsoft.com/mssql/server:2022-latest
-#  ports:
-#    - name: db
-#      containerPort: 1433      
-#  env:
-#    ACCEPT_EULA: Y
-#    MSSQL_SA_PASSWORD: ChangeMe!
-        
-        
-        
+                 
 # k8syaml.com - Kubernetes manifest generator
 kind: Deploy
 type: kubernetes

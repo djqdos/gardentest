@@ -1,0 +1,13 @@
+    # Persistent Volume          
+    #- apiVersion: v1
+    #  kind: PersistentVolume
+    #  metadata:
+    #    name: mssql-volume
+    #  spec:
+    #    capacity:
+    #      storage: 1Gi
+    #    accessModes:
+    #      - ReadWriteOnce
+    #    storageClassName: hostpath
+    #    hostPath:
+    #      path: "/mnt/data"

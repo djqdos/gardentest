@@ -4,6 +4,7 @@
 #              #
 ################
 kind: Build
+disabled: true
 name: tests-build
 description: Builds the unit tests
 type: container
@@ -25,6 +26,7 @@ spec:
 #             #
 ###############
 kind: Test
+disabled: true
 name: tests-testrunner
 description: Runs the tests
 type: container

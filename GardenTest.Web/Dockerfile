@@ -9,6 +9,7 @@ ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["GardenTest.Web/GardenTest.Web.csproj", "GardenTest.Web/"]
 COPY ["GardenTest.Services/GardenTest.Services.csproj", "GardenTest.Services/"]
+COPY ["GardenTest.Models/GardenTest.Models.csproj", "GardenTest.Models/"]
 RUN dotnet restore "GardenTest.Web/GardenTest.Web.csproj" --no-cache
 COPY . .
 WORKDIR "/src/GardenTest.Web"

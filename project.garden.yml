@@ -18,3 +18,4 @@ environments:
 providers:
   - name: local-kubernetes
     environments: [local]
+    setupIngressController: nginx

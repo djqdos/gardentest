@@ -1,0 +1,9 @@
+kind: Build
+disabled: true
+name: consumerapp1-build
+description: Builds the consumer app
+type: container
+source:
+  path: ../
+spec:
+  dockerfile: ConsumerApp1/Dockerfile

@@ -1,5 +1,10 @@
+using GardenTest;
 using GardenTest.Components;
+using GardenTest.Hubs;
 using GardenTest.Services.AdditionService;
+using GardenTest.Setup;
+using MassTransit;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,6 +15,20 @@ builder.Services.AddRazorComponents()
 // Add Services
 builder.Services.AddScoped<IAdditionService, AdditionService>();
 
+
+// Add Mass Transit
+builder.AddMessaging();
+
+
+// DATABASE
+builder.Services.AddDbContext<SampleDbContext>(opt =>
+{
+    opt.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+});
+
+
+// SIGNALR
+builder.Services.AddSignalR();
 
 var app = builder.Build();
 
@@ -29,5 +48,9 @@ app.UseAntiforgery();
 app.MapStaticAssets();
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode();
+
+//app.UseRouting();
+
+app.MapHub<SampleHub>("/samplehub");
 
 app.Run();

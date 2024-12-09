@@ -44,6 +44,7 @@ spec:
         name: mssql-deployment
         labels:
           app: mssql
+          environment: local
       spec:
         selector:
           matchLabels:
@@ -112,16 +113,22 @@ spec:
     - apiVersion: v1
       kind: Service
       metadata:
-        name: mssql-service
+        name: loadbalancer-service        
       spec:
         type: LoadBalancer
+        loadBalancerIP: 192.168.1.38
         selector:
-          app: mssql
+          app: mssql          
         ports:
-          - protocol: TCP
+          - name: sqlserver
+            protocol: TCP
             port: 1433
             targetPort: 1433
-              
+          - name: rabbitmq
+            protocol: TCP
+            port: 5672
+            targetPort: 5672
+
        
         
    

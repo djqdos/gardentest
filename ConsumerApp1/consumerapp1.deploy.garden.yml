@@ -1,0 +1,94 @@
+#kind: Deploy
+#name: consumerapp1-deploy
+#description: Backend Consumer service
+#type: container
+#dependencies: [build.consumerapp1-build]
+#spec:
+#  image: ${actions.build.consumerapp1-build.outputs.deploymentImageId}
+#  ports:
+#    - name: http
+#      containerPort: 8081
+#  ingresses:
+#    - path: /
+#      port: http
+
+
+kind: Deploy
+disabled: true
+type: kubernetes
+name: consumerportal
+dependencies: [build.consumerapp1-build]
+spec:
+  manifests:
+    - apiVersion: apps/v1
+      kind: Deployment
+      metadata:
+        name: consumerportal
+        labels:
+          app: consumerportal
+      spec:
+        replicas: 2
+        selector:
+          matchLabels:
+            app: consumerportal
+        strategy:
+          type: RollingUpdate
+          rollingUpdate:
+            maxSurge: 1
+            maxUnavailable: 1
+        template:
+          metadata:
+            labels:
+              app: consumerportal
+          spec:
+            containers:
+              - name: consumerportal
+                image: ${actions.build.consumerapp1-build.outputs.deploymentImageId}
+                command:
+                  - dotnet
+                  - ConsumerApp1.dll
+                ports:
+                  - name: http
+                    containerPort: 8080
+                    protocol: TCP
+                env:
+                  - name: ASPNETCORE_ENVIRONMENT
+                    value: Development
+                  - name: ASPNETCORE_URLS
+                    value: http://+8080
+
+    - apiVersion: v1
+      kind: Service
+      metadata:
+        labels:
+          app: consumerportal
+        name: consumerportal
+      spec:
+        type: ClusterIP
+        ports:
+          - name: consumerportal
+            port: 8080
+            targetPort: 8080
+            protocol: TCP
+        selector:
+          app: consumerportal
+
+    #- apiVersion: networking.k8s.io/v1
+    #  kind: Ingress
+    #  metadata:
+    #    name: consumerportal
+    #    labels:
+    #      app: consumerportal
+    #  spec:
+    #    ingressClassName: nginx
+    #    rules:
+    #      - host: "consumer.dev"
+    #        http:
+    #          paths:
+    #            - backend:
+    #                service:
+    #                  name: consumerportal
+    #                  port:
+    #                    number: 8080
+    #              path: /
+    #              pathType: Prefix

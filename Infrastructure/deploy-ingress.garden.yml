@@ -1,0 +1,87 @@
+#kind: Deploy
+#name: web-deploy
+#description: Web Frontend Deployment
+#type: container
+#dependencies: [build.web-build]
+#spec:
+#  image: ${actions.build.web-build.outputs.deploymentImageId}
+#  ports:
+#    - name: http
+#      containerPort: 8080
+#  ingresses:
+#    - path: /
+#      port: http
+#  replicas: 2
+
+
+
+kind: Deploy
+type: kubernetes
+name: ingresscontroller
+#dependencies:
+#  - deploy.webportal
+#  - deploy.consumerportal
+spec:
+  manifests:
+    
+    #- apiVersion: networking.k8s.io/v1
+    #  kind: Ingress
+    #  metadata:
+    #    name: webportal
+    #    labels:
+    #      app: webportal
+    #    annotations:
+    #      nginx.ingress.kubernetes.io/ssl-redirect: "false"
+    #      ingress.kubernetes.io/ssl-redirect: "false"
+    #      nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
+    #  spec:
+    #    ingressClassName: nginx
+    #    rules:
+    #      - host: "web.dev" 
+    #        http:
+    #          paths:
+    #            - backend:
+    #                service:
+    #                  name: webportal
+    #                  port:
+    #                    number: 8080
+    #              path: /
+    #              pathType: Prefix
+    - apiVersion: networking.k8s.io/v1
+      kind: Ingress
+      metadata:
+        name: example-ingress
+        namespace: gardentest-rb-namespace
+        annotations:
+          nginx.ingress.kubernetes.io/ssl-passthrough: "false"
+          #nginx.ingress.kubernetes.io/ssl-redirect: "false"          
+          #ingress.kubernetes.io/ssl-redirect: "false"
+          #nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
+          #nginx.ingress.kubernetes.io/force-ssl-redirect: "false"
+          #ingress.kubernetes.io/force-ssl-redirect: "false"
+      spec:
+        ingressClassName: nginx
+        tls:
+          - hosts:
+              - test.dev
+            secretName: my-cert
+        rules:
+          - host: "test.dev"
+            http:
+              paths:
+                - pathType: Prefix
+                  path: "/"
+                  backend:
+                    service:
+                      name: webportal
+                      port:
+                        number: 8080
+                - pathType: Prefix
+                  path: "/consumer"
+                  backend:
+                    service:
+                      name: consumerportal
+                      port:
+                        number: 8080
+
+

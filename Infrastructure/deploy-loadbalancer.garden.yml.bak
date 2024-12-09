@@ -1,0 +1,15 @@
+# LOAD BALANCER
+
+apiVersion: v1
+kind: Service
+disabled: true
+metadata:
+  name: mssql-service
+spec:
+  type: LoadBalancer
+  selector:
+    app: mssql
+  ports:
+    - protocol: TCP
+      port: 1433
+      targetPort: 1433

@@ -18,6 +18,7 @@
 kind: Deploy
 type: kubernetes
 name: ingresscontroller
+disabled: true
 #dependencies:
 #  - deploy.webportal
 #  - deploy.consumerportal

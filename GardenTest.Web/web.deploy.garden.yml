@@ -18,6 +18,7 @@
 kind: Deploy
 type: kubernetes
 name: webportal
+disabled: true
 dependencies: 
   - build.web-build
   - test.tests-testrunner

@@ -1,4 +1,5 @@
 kind: Build
+disabled: true
 name: web-build
 description: Builds the Website
 type: container

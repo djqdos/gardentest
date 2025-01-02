@@ -1,7 +1,6 @@
 # Actual SQL Server
 apiVersion: apps/v1
 kind: Deployment
-disabled: "false"
 metadata:
   name: mssql-deployment
   labels:

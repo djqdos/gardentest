@@ -1,36 +1,23 @@
 # Actual SQL Server
-- apiVersion: apps/v1
-  kind: Deployment
-  disabled: true
-  metadata:
-    name: mssql-deployment
+apiVersion: apps/v1
+kind: Deployment
+disabled: true
+metadata:
+  name: mssql-deployment
     labels:
       app: mssql
-  spec:
-    selector:
-      matchLabels:
+spec:
+  selector:
+    matchLabels:
+      app: mssql
+  replicas: 1
+  strategy:
+    type: Recreate  #RollingUpdate
+  template:
+    metadata:
+      labels:
         app: mssql
-    replicas: 1
-    strategy:
-      type: Recreate  #RollingUpdate
-    template:
-      metadata:
-        labels:
-          app: mssql
-      spec:
-        
-        #volumes:
-        #  - name: mssql-data
-        #    hostPath:
-        #      path: /tmp
-        #      type: Directory
-        #  - name: mssql-claim
-        #    persistentVolumeClaim:
-        #      claimName: mssql-data
-        
-        
-        
-        
+      spec:              
         terminationGracePeriodSeconds: 10
         securityContext:
           fsGroup: 1000

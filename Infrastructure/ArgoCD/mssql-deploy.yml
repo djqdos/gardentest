@@ -51,7 +51,7 @@ spec:
           volumeMounts:
               - name: mssql-volume
                 mountPath: /var/opt/mssql
-      volumes:
-        - name: mssql-volume
-          persistentVolumeClaim:
-            claimName: mssql-claim
+      #volumes:
+      #  - name: mssql-volume
+      #    persistentVolumeClaim:
+      #      claimName: mssql-claim

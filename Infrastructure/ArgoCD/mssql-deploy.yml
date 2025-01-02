@@ -4,8 +4,8 @@ kind: Deployment
 disabled: true
 metadata:
   name: mssql-deployment
-    labels:
-      app: mssql
+  labels:
+    app: mssql
 spec:
   selector:
     matchLabels:

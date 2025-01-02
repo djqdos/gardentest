@@ -1,0 +1,54 @@
+﻿@rendermode InteractiveAuto
+@using GardenTest.Models
+@using Microsoft.AspNetCore.SignalR.Client
+
+@inject NavigationManager NavigationManager
+<h3>SampleEventComponent</h3>
+
+
+@if (sampleEvents != null)
+{
+	<table>
+		@foreach (var e in sampleEvents)
+		{
+			<tr>
+				<td>@e.Id</td>
+				<td>@e.Name</td>
+			</tr>
+		}
+	</table>
+}
+
+@code {
+	private HubConnection hubConnection;
+	List<SampleEvent> sampleEvents = new List<SampleEvent>();
+
+	protected override async Task OnInitializedAsync()
+	{
+		hubConnection = new HubConnectionBuilder()
+		.WithUrl(NavigationManager.ToAbsoluteUri("/samplehub"))
+		.Build();
+
+		sampleEvents.Add(new SampleEvent
+		{
+			 Id = Guid.NewGuid(),
+			 Name = "sdfjhsdfsd"
+		});
+
+
+		hubConnection.On("ReceiveMessage", (Guid id, string name) =>
+		{
+			SampleEvent sampleEvent = new SampleEvent
+			{
+				Id = id, 
+				Name = name
+			};
+			sampleEvents.Add(sampleEvent);
+
+			InvokeAsync(() => StateHasChanged());
+		});
+
+		await hubConnection.StartAsync();
+
+	}
+}

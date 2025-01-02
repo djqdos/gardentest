@@ -1,0 +1,12 @@
+{
+  "profiles": {
+    "ConsumerApp1": {
+      "commandName": "Project",
+      "launchBrowser": false,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "applicationUrl": "https://localhost:58102;http://localhost:58103"
+    }
+  }
+}

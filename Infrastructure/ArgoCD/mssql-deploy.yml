@@ -51,7 +51,38 @@ spec:
           volumeMounts:
               - name: mssql-volume
                 mountPath: /var/opt/mssql
-      #volumes:
-      #  - name: mssql-volume
-      #    persistentVolumeClaim:
-      #      claimName: mssql-claim
+      volumes:
+        - name: mssql-volume
+          persistentVolumeClaim:
+            claimName: mssql-claim
+---
+# Persistent Volume          
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: mssql-volume
+spec:
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: hostpath
+  hostPath:
+    path: "/mnt/data"
+
+
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mssql-claim
+    # annotations:
+    #   volume.beta.kubernetes.io/storage-class: managed-premium # <!-- this is azure, what storage class for local kubernetes
+spec:
+  storageClassName: hostpath
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi   

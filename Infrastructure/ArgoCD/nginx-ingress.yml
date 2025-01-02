@@ -1,39 +1,39 @@
-
-apiVersion: networking.k8s.io/v1
-kind: ingress
-metadata:
-name: example-ingress
-namespace: gardentest-rb-namespace
-annotations:
-  nginx.ingress.kubernetes.io/ssl-passthrough: "false"
-  #nginx.ingress.kubernetes.io/ssl-redirect: "false"          
-  #ingress.kubernetes.io/ssl-redirect: "false"
-  #nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
-  #nginx.ingress.kubernetes.io/force-ssl-redirect: "false"
-  #ingress.kubernetes.io/force-ssl-redirect: "false"
-spec:
-  ingressClassName: nginx
-  tls:
-    - hosts:
-        - test.dev
-      secretName: my-cert
-  rules:
-    - host: "test.dev"
-      http:
-        paths:
-          - pathType: Prefix
-            path: "/"
-            backend:
-              service:
-                name: webportal
-                port:
-                  number: 8080
-          - pathType: Prefix
-            path: "/consumer"
-            backend:
-              service:
-                name: consumerportal
-                port:
-                  number: 8080
+#
+#apiVersion: networking.k8s.io/v1
+#kind: ingress
+#metadata:
+#name: example-ingress
+#namespace: gardentest-rb-namespace
+#annotations:
+#  nginx.ingress.kubernetes.io/ssl-passthrough: "false"
+#  #nginx.ingress.kubernetes.io/ssl-redirect: "false"          
+#  #ingress.kubernetes.io/ssl-redirect: "false"
+#  #nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
+#  #nginx.ingress.kubernetes.io/force-ssl-redirect: "false"
+#  #ingress.kubernetes.io/force-ssl-redirect: "false"
+#spec:
+#  ingressClassName: nginx
+#  tls:
+#    - hosts:
+#        - test.dev
+#      #secretName: my-cert
+#  rules:
+#    - host: "test.dev"
+#      http:
+#        paths:
+#          - pathType: Prefix
+#            path: "/"
+#            backend:
+#              service:
+#                name: webportal
+#                port:
+#                  number: 8080
+#          - pathType: Prefix
+#            path: "/consumer"
+#            backend:
+#              service:
+#                name: consumerportal
+#                port:
+#                  number: 8080
 
 

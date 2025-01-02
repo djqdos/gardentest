@@ -45,7 +45,7 @@ spec:
             - name: MSSQL_PID
               value: "Developer"
             - name: ACCEPT_EULA
-              value: Y
+              value: "Y"
             - name: MSSQL_SA_PASSWORD
               value: "ChangeMe!"
           volumeMounts:

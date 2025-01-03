@@ -9,6 +9,6 @@ spec:
   source:
     repoURL: https://github.com/djqdos/gardentest.git
     targetRevision: HEAD
-    path: "Infrastructure/Terraform"
+    path: "Infrastructure/ArgoCD"
   destination:
     server: https://kubernetes.default.svc
